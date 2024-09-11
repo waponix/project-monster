@@ -1,0 +1,133 @@
+[gd_scene load_steps=13 format=3 uid="uid://mbww48rxcclk"]
+
+[ext_resource type="Script" path="res://scripts/monster/Monster001.gd" id="1_mhj5u"]
+[ext_resource type="Script" path="res://scripts/StateMachine.gd" id="1_wyxoa"]
+[ext_resource type="Script" path="res://scripts/Vision.gd" id="2_0eawg"]
+[ext_resource type="Script" path="res://scripts/monster/MonsterIdleBasic.gd" id="2_hn7mp"]
+[ext_resource type="Script" path="res://scripts/LineOfSight.gd" id="3_3m0er"]
+[ext_resource type="Script" path="res://scripts/monster/MonsterChase.gd" id="5_y6wxj"]
+[ext_resource type="Script" path="res://scripts/monster/MonsterSeek.gd" id="7_3588y"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mx3vp"]
+albedo_color = Color(0.877378, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_2the3"]
+material = SubResource("StandardMaterial3D_mx3vp")
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_thaib"]
+points = PackedVector3Array(0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ne8ed"]
+albedo_color = Color(0.878431, 0.584314, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_nivx0"]
+material = SubResource("StandardMaterial3D_ne8ed")
+
+[node name="Monster001" type="CharacterBody3D"]
+script = ExtResource("1_mhj5u")
+movement_speed = 1.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("BoxMesh_2the3")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("ConvexPolygonShape3D_thaib")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 1, -0.5)
+mesh = SubResource("BoxMesh_nivx0")
+skeleton = NodePath("../MeshInstance3D")
+
+[node name="Vision" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -0.777)
+script = ExtResource("2_0eawg")
+view_distance = 5.0
+
+[node name="RayCast3D" type="RayCast3D" parent="Vision"]
+process_physics_priority = 1
+target_position = Vector3(0, 0, 0)
+debug_shape_custom_color = Color(0.992157, 0, 0, 1)
+debug_shape_thickness = 5
+
+[node name="RayCast3D2" type="RayCast3D" parent="Vision"]
+process_physics_priority = 1
+transform = Transform3D(0.996195, 0, 0.0871557, 0, 1, 0, -0.0871557, 0, 0.996195, 0, 0, 0)
+target_position = Vector3(0, 0, 0)
+debug_shape_custom_color = Color(0.992157, 0, 0, 1)
+debug_shape_thickness = 5
+
+[node name="RayCast3D5" type="RayCast3D" parent="Vision"]
+process_physics_priority = 1
+transform = Transform3D(0.996195, 0, -0.0871557, 0, 1, 0, 0.0871557, 0, 0.996195, 0, 0, 0)
+target_position = Vector3(0, 0, 0)
+debug_shape_custom_color = Color(0.992157, 0, 0, 1)
+debug_shape_thickness = 5
+
+[node name="RayCast3D3" type="RayCast3D" parent="Vision"]
+process_physics_priority = 1
+transform = Transform3D(0.984808, 0, 0.173648, 0, 1, 0, -0.173648, 0, 0.984808, 0, 0, 0)
+target_position = Vector3(0, 0, 0)
+debug_shape_custom_color = Color(0.992157, 0, 0, 1)
+debug_shape_thickness = 5
+
+[node name="RayCast3D6" type="RayCast3D" parent="Vision"]
+process_physics_priority = 1
+transform = Transform3D(0.984808, 0, -0.173648, 0, 1, 0, 0.173648, 0, 0.984808, 0, 0, 0)
+target_position = Vector3(0, 0, 0)
+debug_shape_custom_color = Color(0.992157, 0, 0, 1)
+debug_shape_thickness = 5
+
+[node name="RayCast3D4" type="RayCast3D" parent="Vision"]
+process_physics_priority = 1
+transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, 0, 0, 0)
+target_position = Vector3(0, 0, 0)
+debug_shape_custom_color = Color(0.992157, 0, 0, 1)
+debug_shape_thickness = 5
+
+[node name="RayCast3D7" type="RayCast3D" parent="Vision"]
+process_physics_priority = 1
+transform = Transform3D(0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, 0, 0, 0)
+target_position = Vector3(0, 0, 0)
+debug_shape_custom_color = Color(0.992157, 0, 0, 1)
+debug_shape_thickness = 5
+
+[node name="LineOfSight" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -0.777)
+visible = false
+script = ExtResource("3_3m0er")
+
+[node name="RayCast3D" type="RayCast3D" parent="LineOfSight"]
+process_physics_priority = 1
+target_position = Vector3(0, 0, 0)
+debug_shape_custom_color = Color(0.992157, 0, 0, 1)
+debug_shape_thickness = 5
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("control_body", "initial_state")]
+script = ExtResource("1_wyxoa")
+control_body = NodePath("..")
+initial_state = NodePath("MonsterIdleBasic")
+
+[node name="MonsterIdleBasic" type="Node" parent="StateMachine" node_paths=PackedStringArray("vision")]
+script = ExtResource("2_hn7mp")
+vision = NodePath("../../Vision")
+
+[node name="MonsterChase" type="Node" parent="StateMachine" node_paths=PackedStringArray("line_of_sight")]
+script = ExtResource("5_y6wxj")
+line_of_sight = NodePath("../../LineOfSight")
+
+[node name="MonsterSeek" type="Node" parent="StateMachine" node_paths=PackedStringArray("vision")]
+script = ExtResource("7_3588y")
+awareness_distance = 20.0
+vision = NodePath("../../Vision")
+
+[node name="VisibleOnScreenNotifier3D" type="VisibleOnScreenNotifier3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Navigation" type="NavigationAgent3D" parent="."]
+debug_enabled = true
+debug_path_custom_color = Color(1, 0, 0, 1)
+
+[connection signal="screen_entered" from="VisibleOnScreenNotifier3D" to="Vision" method="_on_visible_on_screen_notifier_3d_screen_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier3D" to="Vision" method="_on_visible_on_screen_notifier_3d_screen_exited"]

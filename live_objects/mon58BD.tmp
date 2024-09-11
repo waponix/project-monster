@@ -1,0 +1,47 @@
+[gd_scene load_steps=8 format=3 uid="uid://mbww48rxcclk"]
+
+[ext_resource type="Script" path="res://scripts/monster/Monster001.gd" id="1_mhj5u"]
+[ext_resource type="Script" path="res://scripts/StateMachine.gd" id="1_wyxoa"]
+[ext_resource type="Script" path="res://scripts/Vision.gd" id="2_0eawg"]
+[ext_resource type="Script" path="res://scripts/monster/MonsterIdleBasic.gd" id="2_hn7mp"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mx3vp"]
+albedo_color = Color(0.877378, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_2the3"]
+material = SubResource("StandardMaterial3D_mx3vp")
+size = Vector3(1, 2, 1)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_18xg8"]
+points = PackedVector3Array(-0.499921, -0.985089, -0.5, 0.499978, 0.954305, 0.5, 0.5, 0.954347, -0.484149, -0.499921, 0.985089, -0.5, -0.484049, -0.954305, 0.5, 0.5, -0.954347, -0.484149, -0.484049, 0.954305, 0.5, 0.499978, -0.954305, 0.5)
+
+[node name="Monster001" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("1_mhj5u")
+
+[node name="PhysicsBody" type="CharacterBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PhysicsBody"]
+mesh = SubResource("BoxMesh_2the3")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PhysicsBody"]
+shape = SubResource("ConvexPolygonShape3D_18xg8")
+
+[node name="LineOfSight" type="Node" parent="PhysicsBody"]
+script = ExtResource("2_0eawg")
+
+[node name="RayCast3D" type="RayCast3D" parent="PhysicsBody/LineOfSight"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+target_position = Vector3(0, 0, -6)
+hit_from_inside = true
+debug_shape_custom_color = Color(0.992157, 0, 0, 1)
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("control_body", "initial_state")]
+script = ExtResource("1_wyxoa")
+control_body = NodePath("../PhysicsBody")
+initial_state = NodePath("MonsterIdleBasic")
+
+[node name="MonsterIdleBasic" type="Node" parent="StateMachine" node_paths=PackedStringArray("vision")]
+script = ExtResource("2_hn7mp")
+movement_speed = 1.0
+vision = NodePath("../../PhysicsBody/LineOfSight")
